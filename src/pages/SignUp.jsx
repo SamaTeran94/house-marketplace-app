@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { db } from '../firebase.config.jsx'
 import { BiSolidUser } from 'react-icons/bi'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
@@ -26,6 +28,26 @@ const SignUp = () => {
         }))
     }
 
+    const onSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const auth = getAuth()
+
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+
+            const user = userCredential.user
+
+            updateProfile(auth.currentUser, {
+                displayName: name
+            })
+
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     return (
         <>
@@ -33,7 +55,7 @@ const SignUp = () => {
                 <div className=" w-10/12 mt-10">
                     <h className="font-black text-2xl">Welcome Back!</h>
 
-                    <form className="flex flex-col gap-5 mt-5">
+                    <form onSubmit={onSubmit} className="flex flex-col gap-5 mt-5">
                         <div className="relative">
                             <BiSolidUser className="absolute h-5 w-5 left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
                             <input
@@ -85,7 +107,9 @@ const SignUp = () => {
                         </div>
                         <div className="flex justify-between sm:justify-normal text-center items-center gap-5">
                             <p className="font-black">Sign Up</p>
-                            <BsFillArrowRightCircleFill className=" text-accent font-bold text-3xl" />
+                            <button>
+                                <BsFillArrowRightCircleFill className=" text-accent font-bold text-3xl cursor-pointer" />
+                            </button>
                         </div>
                         <div className="flex justify-center">
                             <Link to='/sign-in' className="text-accent font-bold">Sign In Instead</Link>
