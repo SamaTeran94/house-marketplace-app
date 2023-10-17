@@ -1,12 +1,15 @@
 import { useState } from "react"
+import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { setDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from '../firebase.config.jsx'
 import { BiSolidUser } from 'react-icons/bi'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { MdEmail } from 'react-icons/md'
+import OAuth from '../components/OAuth.jsx'
 
 const SignUp = () => {
 
@@ -42,9 +45,15 @@ const SignUp = () => {
                 displayName: name
             })
 
+            const formDataCopy = { ...formData }
+            delete formDataCopy.password
+            formDataCopy.timestamp = serverTimestamp()
+
+            await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
             navigate('/')
         } catch (error) {
-            console.log(error)
+            toast.error('Something went wrong with registration')
         }
 
     }
@@ -105,11 +114,14 @@ const SignUp = () => {
                                 Forgot Password
                             </Link>
                         </div>
-                        <div className="flex justify-between sm:justify-normal text-center items-center gap-5">
-                            <p className="font-black">Sign Up</p>
-                            <button>
-                                <BsFillArrowRightCircleFill className=" text-accent font-bold text-3xl cursor-pointer" />
-                            </button>
+                        <div>
+                            <div className="flex justify-between sm:justify-normal text-center items-center gap-5">
+                                <p className="font-black">Sign Up</p>
+                                <button>
+                                    <BsFillArrowRightCircleFill className=" text-accent font-bold text-3xl cursor-pointer" />
+                                </button>
+                            </div>
+                            <OAuth />
                         </div>
                         <div className="flex justify-center">
                             <Link to='/sign-in' className="text-accent font-bold">Sign In Instead</Link>

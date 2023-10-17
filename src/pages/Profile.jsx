@@ -1,9 +1,103 @@
+import { getAuth, updateProfile } from "firebase/auth"
+import { useState } from "react"
+import { updateDoc, doc } from "firebase/firestore"
+import { db } from '../firebase.config'
+import { useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify'
 
 const Profile = () => {
+    const auth = getAuth()
+    console.log(auth)
+
+    const [changeDetails, setChangeDetails] = useState(false)
+
+    const [formData, setFormData] = useState({
+        name: auth.currentUser.displayName,
+        email: auth.currentUser.email
+    })
+
+    const { name, email } = formData
+
+    const navigate = useNavigate()
+
+    const onLogout = () => {
+        auth.signOut()
+        navigate('/')
+    }
+
+    const onSubmit = async () => {
+        try {
+            if (auth.currentUser.displayName !== name) {
+                //Update display name in fb
+
+                await updateProfile(auth.currentUser, {
+                    displayName: name
+                })
+
+                //Upate in firestore
+                const userRef = doc(db, 'users', auth.currentUser.uid)
+                await updateDoc(userRef, {
+                    name: name
+                })
+
+            }
+        } catch (error) {
+            toast.error('Could not update profile details')
+        }
+    }
+
+    const onChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.id]: e.target.value
+        }))
+    }
+
     return (
-        <div>
-            Profile
+
+        <div className="w-full flex flex-col justify-center items-center">
+            <div className="w-11/12 flex justify-between mt-5" >
+                <p className="text-3xl font-black">My Profile</p>
+                <button
+                    type="button"
+                    className="bg-accent text-sm rounded-xl p-1 text-white"
+                    onClick={onLogout}>Logout</button>
+
+            </div>
+            <div className="w-11/12 flex justify-between mt-14" >
+                <p className="text-md">Personal Details</p>
+                <button
+                    onClick={() => {
+                        changeDetails && onSubmit()
+                        setChangeDetails((prevState) => !prevState)
+                    }}
+                    type="button"
+                    className=" text-sm rounded-xl p-1 text-accent font-bold">{changeDetails ? 'Done' : 'Change'}
+                </button>
+
+            </div>
+            <div className="w-11/12 flex justify-between mt-5" >
+                <form className="flex flex-col w-full">
+                    <input
+                        className={!changeDetails ? 'bg-white' : `bg-base-200`}
+                        type="text"
+                        id="name"
+                        disabled={!changeDetails}
+                        value={name}
+                        onChange={onChange}
+                    />
+                    <input
+                        className={!changeDetails ? 'bg-white' : `bg-base-200`}
+                        type="text"
+                        id="email"
+                        disabled={!changeDetails}
+                        value={email}
+                        onChange={onChange}
+                    />
+                </form>
+            </div>
         </div>
+
     )
 }
 
