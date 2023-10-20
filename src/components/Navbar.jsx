@@ -14,7 +14,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="w-full bg-base-200 h-20 flex justify-around items-center fixed bottom-0 left-0 right-0">
+        <div className="w-full bg-base-200 p-3 flex justify-around items-center">
             <div className="text-center flex flex-col items-center">
                 <MdOutlineExplore
                     className={pathMatchRoute('/') ? `text-dark text-3xl cursor-pointer` : `text-secondary text-3xl cursor-pointer`} onClick={() => navigate('/')} />

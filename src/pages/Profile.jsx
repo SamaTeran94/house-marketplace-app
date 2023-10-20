@@ -2,8 +2,9 @@ import { getAuth, updateProfile } from "firebase/auth"
 import { useState } from "react"
 import { updateDoc, doc } from "firebase/firestore"
 import { db } from '../firebase.config'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { toast } from 'react-toastify'
+import { FaHouse, FaAngleRight } from 'react-icons/fa6'
 
 const Profile = () => {
     const auth = getAuth()
@@ -77,9 +78,9 @@ const Profile = () => {
 
             </div>
             <div className="w-11/12 flex justify-between mt-5" >
-                <form className="flex flex-col w-full">
+                <form className="flex flex-col w-full bg-white rounded-lg p-2">
                     <input
-                        className={!changeDetails ? 'bg-white' : `bg-base-200`}
+                        className={!changeDetails ? `bg-white` : `bg-base-200`}
                         type="text"
                         id="name"
                         disabled={!changeDetails}
@@ -87,15 +88,20 @@ const Profile = () => {
                         onChange={onChange}
                     />
                     <input
-                        className={!changeDetails ? 'bg-white' : `bg-base-200`}
+                        className="bg-white"
                         type="text"
                         id="email"
-                        disabled={!changeDetails}
+                        disabled
                         value={email}
                         onChange={onChange}
                     />
                 </form>
             </div>
+            <Link to='/create-listing' className="w-11/12 flex justify-between mt-10 bg-white items-center p-2 rounded-lg">
+                <FaHouse />
+                <p>Sell or Rent your home</p>
+                <FaAngleRight />
+            </Link>
         </div>
 
     )
