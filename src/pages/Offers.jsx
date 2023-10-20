@@ -52,7 +52,7 @@ const Offers = () => {
 
     return (
         <div className="w-full flex flex-col justify-center items-center">
-            <div className="w-11/12 mt-5" >
+            <div className="w-11/12 mt-5 mb-5" >
                 <header className="text-3xl font-black mb-14">
                     <p>Offers</p>
                 </header>
@@ -60,7 +60,7 @@ const Offers = () => {
                 {loading ? <Spinner /> : listings && listings.length > 0 ?
                     <>
                         <main>
-                            <ul>
+                            <ul className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
                                 {listings.map((listing) => (
                                     <ListingItem listing={listing.data} key={listing.id} id={listing.id} />
                                 ))}
