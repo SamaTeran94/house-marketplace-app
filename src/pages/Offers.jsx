@@ -53,7 +53,7 @@ const Offers = () => {
     return (
         <div className="w-full flex flex-col justify-center items-center">
             <div className="w-11/12 mt-5 mb-5" >
-                <header className="text-3xl font-black mb-14">
+                <header className="text-3xl font-black mb-5">
                     <p>Offers</p>
                 </header>
 

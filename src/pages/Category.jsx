@@ -53,7 +53,7 @@ const Category = () => {
     return (
         <div className="w-full flex flex-col justify-center items-center">
             <div className="w-11/12 mt-5 mb-5" >
-                <header className="text-3xl font-black mb-10">
+                <header className="text-3xl font-black mb-5">
                     <p>{params.categoryName === 'rent' ? 'Places for rent' : 'Places for sale'}</p>
                 </header>
 

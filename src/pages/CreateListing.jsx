@@ -191,7 +191,7 @@ const CreateListing = () => {
     }
 
     return (
-        <div className="w-full flex flex-col justify-center items-center mb-28">
+        <div className="w-full flex flex-col justify-center items-center mb-5">
             <div className="w-11/12 mt-5 flex flex-row" >
                 <form onSubmit={onSubmit} className="flex flex-col md:flex-row w-full justify-around gap-4">
                     <div className="flex flex-col gap-4">
@@ -223,7 +223,7 @@ const CreateListing = () => {
                             <div className="flex flex-row gap-1 w-full mt-2">
                                 <input
                                     type="text"
-                                    className='rounded-lg w-96 md:w-64 lg:w-96 p-1'
+                                    className='rounded-lg w-52 sm:w-96 md:w-64 lg:w-96 p-1'
                                     id="name"
                                     value={name}
                                     onChange={onMutate}
@@ -314,7 +314,7 @@ const CreateListing = () => {
                         <div className="flex flex-col w-full">
                             <label className="font-bold">Address</label>
                             <textarea
-                                className=" w-96 md:w-64 lg:w-96 rounded-lg"
+                                className=" w-52 sm:w-96 md:w-64 lg:w-96 rounded-lg"
                                 type='text'
                                 id="address"
                                 value={address}
@@ -425,7 +425,7 @@ const CreateListing = () => {
                                 <div className="flex flex-row gap-5 mt-2 items-center">
                                     <input
                                         type="file"
-                                        className='bg-white p-2 rounded-lg formInputFile'
+                                        className='bg-white p-2 rounded-lg formInputFile w-64 sm:w-96 md:w-full'
                                         id="images"
                                         onChange={onMutate}
                                         max='6'
@@ -439,7 +439,7 @@ const CreateListing = () => {
                             <div>
                                 <button
                                     type="submit"
-                                    className="bg-accent p-2 rounded-lg w-96 md:w-full text-white"
+                                    className="bg-accent p-2 rounded-lg w-64 sm:w-96 md:w-full text-white"
                                 >Create Listing</button>
                             </div>
 
