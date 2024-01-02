@@ -10,6 +10,7 @@ import Profile from './pages/Profile.jsx'
 import SignIn from './pages/SignIn.jsx'
 import SignUp from './pages/SignUp.jsx'
 import CreateListing from "./pages/CreateListing.jsx";
+import Listing from "./pages/Listing.jsx";
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import Navbar from "./components/Navbar.jsx"
 import Spinner from "./components/Spinner.jsx";
@@ -47,6 +48,7 @@ function App() {
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/create-listing" element={<CreateListing />} />
+            <Route path="/category/:categoryName/:listingId" element={<Listing />} />
           </Routes>
           <Navbar />
         </div>

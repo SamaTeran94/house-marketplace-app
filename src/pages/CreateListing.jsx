@@ -93,7 +93,6 @@ const CreateListing = () => {
         } else {
             geolocation.lat = latitude
             geolocation.lng = longitude
-            location = address
         }
 
         //Store images in firebase
@@ -147,9 +146,9 @@ const CreateListing = () => {
             timestamp: serverTimestamp()
         }
 
+        formDataCopy.location = address
         delete formDataCopy.images
         delete formDataCopy.address
-        location && (formDataCopy.location = location)
         !formDataCopy.offer && delete formDataCopy.discountedPrice
 
         const docRef = await addDoc(collection(db, 'listings'), formDataCopy)
@@ -421,7 +420,7 @@ const CreateListing = () => {
 
                             <div className="flex flex-col">
                                 <label className="font-bold">Images</label>
-                                <p>The first image will be the cover (max 6).</p>
+                                <p className="text-sm">The first image will be the cover (max 6).</p>
                                 <div className="flex flex-row gap-5 mt-2 items-center">
                                     <input
                                         type="file"
