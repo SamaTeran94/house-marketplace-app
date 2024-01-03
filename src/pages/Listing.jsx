@@ -5,6 +5,8 @@ import { getAuth } from 'firebase/auth'
 import { db } from '../firebase.config'
 import Spinner from '../components/Spinner.jsx'
 import { FaShareNodes } from "react-icons/fa6";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
+import 'leaflet/dist/leaflet.css';
 
 const Listing = () => {
 
@@ -66,19 +68,34 @@ const Listing = () => {
                     <li>{listing.parking && 'Furnished'}</li>
                 </ul>
 
-                <p className="font-bold text-md">Location</p>
+                <p className="font-bold text-md mt-5">Location</p>
 
-                {/* Map */}
+                <div className="w-full h-52 overflow-x-hidden">
+                    <MapContainer style={{ height: '100%', width: '100%' }}
+                        center={[listing.geolocation.lat, listing.geolocation.lng]}
+                        zoom={13} scrollWheelZoom={false}>
+
+                        <TileLayer
+                            attribution='&copy; <a href="http:osm.org/
+                            copyright">OpenStreetMap</a> contributors'
+                            url='https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
+                        />
+
+                        <Marker position={[listing.geolocation.lat, listing.geolocation.lng]}>
+
+                            <Popup>{listing.location}</Popup>
+                        </Marker>
+
+                    </MapContainer>
+                </div>
 
                 <div className="flex justify-center">
-                    <Link to={`/contact/${listing.userRef}?listingName=${listing.name}`} className="bg-accent rounded-lg flex justify-center p-2 w-1/2 text-white">
+                    <Link to={`/contact/${listing.userRef}?listingName=${listing.name}`} className="bg-accent rounded-lg flex justify-center p-2 w-1/2 text-white mt-5">
                         Contact Landlord
                     </Link>
                 </div>
 
             </div>
-
-
 
             {/*<div className="flex flex-col justify-end">
                 <div className="flex justify-end gap-2 m-2 cursor-pointer" onClick={() => {
@@ -95,7 +112,7 @@ const Listing = () => {
                 </div>
 
             </div>*/}
-        </main>
+        </main >
     )
 }
 
