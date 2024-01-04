@@ -30,7 +30,7 @@ const Navbar = () => {
                 <CgProfile
                     className={pathMatchRoute('/profile') ? `text-dark text-3xl cursor-pointer` : `text-secondary text-3xl cursor-pointer`}
                     onClick={() => navigate('/profile')} />
-                <h1 className={pathMatchRoute('/profile') ? `text-dark` : `te text-secondary`}>Profile</h1>
+                <h1 className={pathMatchRoute('/profile') ? `text-dark` : `text-secondary`}>Profile</h1>
             </div>
         </div>
 

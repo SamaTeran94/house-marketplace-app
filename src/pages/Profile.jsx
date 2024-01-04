@@ -1,16 +1,19 @@
 import { getAuth, updateProfile } from "firebase/auth"
-import { useState } from "react"
-import { updateDoc, doc } from "firebase/firestore"
+import { useState, useEffect } from "react"
+import { updateDoc, doc, collection, getDocs, query, where, orderBy, deleteDoc } from "firebase/firestore"
 import { db } from '../firebase.config'
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from 'react-toastify'
 import { FaHouse, FaAngleRight } from 'react-icons/fa6'
+import ListingItem from '../components/ListingItem.jsx'
 
 const Profile = () => {
     const auth = getAuth()
     console.log(auth)
 
     const [changeDetails, setChangeDetails] = useState(false)
+    const [listings, setListings] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     const [formData, setFormData] = useState({
         name: auth.currentUser.displayName,
@@ -20,6 +23,35 @@ const Profile = () => {
     const { name, email } = formData
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchUserListings = async () => {
+            try {
+                const listingsRef = collection(db, 'listings')
+                const q = query(listingsRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
+                const querySnap = await getDocs(q)
+
+                console.log(querySnap.docs); // Log the retrieved documents
+
+                let listings = []
+
+                querySnap.forEach((doc) => {
+                    return listings.push({
+                        id: doc.id,
+                        data: doc.data()
+                    })
+                })
+
+                setListings(listings)
+                setLoading(false)
+            } catch (error) {
+                console.error('Error fetching listings:', error);
+            }
+        }
+
+        fetchUserListings()
+
+    }, [auth.currentUser.uid])
 
     const onLogout = () => {
         auth.signOut()
@@ -52,6 +84,17 @@ const Profile = () => {
             ...prevState,
             [e.target.id]: e.target.value
         }))
+    }
+
+    const onDelete = async (listingId) => {
+        if (window.confirm('Are you sure you want to delete')) {
+            await deleteDoc(doc(db, 'listings', listingId))
+            const updatedListings = listings.filter(
+                (listing) => listing.id !== listingId
+            )
+            setListings(updatedListings)
+            toast.success('Successfully deleted listing')
+        }
     }
 
     return (
@@ -102,6 +145,20 @@ const Profile = () => {
                 <p>Sell or Rent your home</p>
                 <FaAngleRight />
             </Link>
+
+            {!loading && listings?.length > 0 && (
+                <>
+                    <div className="flex w-full justify-start">
+                        <p className="font-bold text-2xl m-7">Your Listings</p>
+                    </div>
+                    <ul className="flex flex-col gap-4 mb-5">
+                        {listings.map((listing) => (
+                            <ListingItem key={listing.id} listing={listing.data} id={listing.id}
+                                onDelete={() => onDelete(listing.id)} />
+                        ))}
+                    </ul>
+                </>
+            )}
         </div>
 
     )

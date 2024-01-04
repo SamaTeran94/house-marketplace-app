@@ -16,7 +16,12 @@ const ListingItem = ({ listing, id, onDelete }) => {
                     </img>
                 </Link>
                 <div className="flex flex-col justify-center">
-                    <p className="font-semibold text-sm sm:text-base md:text-lg lg:text-base xl:text-xl">{listing.location}</p>
+                    <div className="flex gap-2 items-center">
+                        <p className="font-semibold text-sm sm:text-base md:text-lg lg:text-base xl:text-xl">{listing.location}</p>
+                        {onDelete && (
+                            <MdDeleteForever className="text-xl cursor-pointer" onClick={() => onDelete(listing.id, listing.name)} />
+                        )}
+                    </div>
                     <p className="font-black  text-sm sm:text-base md:text-lg lg:text-base xl:text-xl">{listing.name}</p>
                     <p className="text-accent font-bold  text-sm sm:text-base md:text-lg lg:text-base xl:text-xl">${listing.offer ? listing.discountedPrice?.toLocaleString() : listing.regularPrice?.toLocaleString()}{listing.type === 'rent' && ' / Month'}</p>
                     <div className="flex items-center gap-2 font-semibold  text-sm sm:text-base md:text-lg lg:text-base xl:text-xl">
@@ -26,9 +31,6 @@ const ListingItem = ({ listing, id, onDelete }) => {
                     </div>
                 </div>
             </div>
-            {onDelete && (
-                <MdDeleteForever onClick={() => onDelete(listing.id, listing.name)} />
-            )}
         </div>
     )
 }
